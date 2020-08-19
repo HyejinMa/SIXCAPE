@@ -47,7 +47,7 @@ public class MovingObject : MonoBehaviour
 
         vector.Set(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), transform.position.z);
 
-        /*
+
         RaycastHit2D hit; //A지점에서 B지점에 레이저 쏠때 방해물이 없으면 hit에 null값 리턴, 있으면 방해물 리턴
 
         Vector2 start = transform.position; // A지점, 캐릭터의 현재 위치 값
@@ -57,9 +57,8 @@ public class MovingObject : MonoBehaviour
         hit = Physics2D.Linecast(start, end, layerMask);
         boxCollider.enabled = true;
 
-        if (hit.transform != null)
-        {*/
-
+        if (hit.transform == null)
+        {
 
             while (currentWalkCount < walkCount)
             {
@@ -76,13 +75,13 @@ public class MovingObject : MonoBehaviour
                 yield return new WaitForSeconds(0.01f);
 
             }
-          
+
             currentWalkCount = 0;
             canMove = true;
         }// 원래 이동되는 픽셀 즉 speed와 walkCount를 곱했을때 나오는 숫자가 크면 순간이동 하는 것처럼 보이게됨 이를 방지하기 위해 대기 코루틴 작성
-    
 
- 
+
+    }
 
     void Update()
     {
