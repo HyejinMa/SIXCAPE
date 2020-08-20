@@ -31,6 +31,21 @@ public class MovingObject : MonoBehaviour
         boxCollider = GetComponent<BoxCollider2D>();
     }
 
+    void Update()
+    {
+        Debug.Log(canMove);
+        if (canMove)
+        {
+            // 우,상방향키가 눌리면 1 리턴, 좌,하방향키가 눌리면 -1 리턴
+            // 상하좌우 방향키 누르게 되면 이동
+            if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
+            {
+                canMove = false;
+                StartCoroutine(MoveCoroutine());
+            }
+        }
+    }
+
     IEnumerator MoveCoroutine()
     {
         while (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
@@ -81,30 +96,9 @@ public class MovingObject : MonoBehaviour
                 yield return new WaitForSeconds(0.01f);
 
             }
-            currentWalkCount = 0;
-            canMove = true;
-            // 원래 이동되는 픽셀 즉 speed와 walkCount를 곱했을때 나오는 숫자가 크면 순간이동 하는 것처럼 보이게됨 이를 방지하기 위해 대기 코루틴 작성
-
-
         }
-
-        void Update()
-        {
-            if (canMove)
-            {
-                // 우,상방향키가 눌리면 1 리턴, 좌,하방향키가 눌리면 -1 리턴
-                // 상하좌우 방향키 누르게 되면 이동
-                if (Input.GetAxisRaw("Horizontal") != 0 || Input.GetAxisRaw("Vertical") != 0)
-                {
-                    canMove = false;
-                    StartCoroutine(MoveCoroutine());
-
-
-
-                }
-            }
-
-
-        }
+        currentWalkCount = 0;
+        canMove = true;
+        // 원래 이동되는 픽셀 즉 speed와 walkCount를 곱했을때 나오는 숫자가 크면 순간이동 하는 것처럼 보이게됨 이를 방지하기 위해 대기 코루틴 작
     }
 }
