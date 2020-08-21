@@ -5,7 +5,7 @@ using UnityEditorInternal;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public abstract class MovingObject : MonoBehaviour
+public class MovingObject : MonoBehaviour
 {
     public float moveTime = 0.1f;        // 오브젝트를 움직이게 할 시간단위
     public LayerMask blockingLayer;     // 충돌이 일어났는지 체크할 레이어
@@ -14,7 +14,13 @@ public abstract class MovingObject : MonoBehaviour
     private Rigidbody2D rb2D;
     private float inverseMoveTime;      // 움직임을 효과적으로 만들 때 사용할 변수
 
-    
+    public float speed; // 캐릭터 이동 속도
+    private Vector3 vector; // 벡터값
+
+    public float runSpeed; // 
+    private float applyRunSpeed; // 
+
+
     // 자식 클래스가 덮어써서 재정의 가능 (오버라이드)
     protected virtual void Start()
     {
@@ -25,6 +31,31 @@ public abstract class MovingObject : MonoBehaviour
 
         inverseMoveTime = 1f / moveTime;
 
+    }
+
+    void Update()
+    {
+        if(Input.GetAxisRaw("Horizontal") !=0 || Input.GetAxisRaw("Vertical") != 0)
+        {
+            if (Input.GetKey(KeyCode.LeftShift))
+            {
+                applyRunSpeed = runSpeed;
+            }
+            else
+                applyRunSpeed = 0;
+
+            vector.Set(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"), transform.position.z);
+
+            if(vector.x != 0)
+            {
+                transform.Translate(vector.x * (speed + applyRunSpeed), 0, 0);
+            }
+
+            else if(vector.y != 0)
+            {
+                transform.Translate(0, vector.y * (speed + applyRunSpeed), 0);
+            }
+        }
     }
 
     // Move는 이동할 수 있으면 true를 반환하고 그렇지 않으면 false를 반환
@@ -96,15 +127,12 @@ public abstract class MovingObject : MonoBehaviour
 
         // 부딪쳤다면, 충돌한 오브젝트의 컴포넌트의 레퍼런스를 T타입의 컴포넌트에 할당
         T hitComponent = hit.transform.GetComponent<T>();
-
+        /*
         // 움직이던 오브젝트가 막혔고, 상호작용할 수 있는 오브젝트와 충돌
         if (!canMove && hitComponent != null)
-            OnCantMove(hitComponent);
+            OnCantMove(hitComponent);*/
     }
 
-    // 일반형(Generic) 입력 T를 T형의 component라는 변수로 받아옴.
-    // 추상화 함수
-    protected abstract void OnCantMove<T>(T component)
-        where T : Component; 
+ 
 
 }
