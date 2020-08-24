@@ -40,8 +40,12 @@ public class InEnemyMove : MonoBehaviour
             Debug.Log("앞 벽있음");
         }
     }
-
-
+        void OnTriggerEnter(Collider col)
+        {
+            if (col.gameobject == "Player")
+            speed = 0;
+            //플레이어스피드
+        }
 
         public void MoveToTarget()
     {
