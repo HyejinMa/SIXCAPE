@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using JetBrains.Annotations;
 using UnityEditorInternal;
 using UnityEngine;
 
@@ -14,10 +15,10 @@ public class InEnemyMove : MonoBehaviour
     public float velocity;
     public float accelaration;
 
+
     void Awake()
     {
         rigid = GetComponent<Rigidbody2D>();
-
         Invoke("Think", 5); // 주어진 시간이 지난뒤, 지정된 함수를 실행
     }
 
@@ -40,8 +41,15 @@ public class InEnemyMove : MonoBehaviour
             Debug.Log("앞 벽있음");
         }
     }
-      
-        public void MoveToTarget()
+
+    private void OnCollisionEnter(Collision collision)
+    {
+        if (collision.gameObject == gameObject.("Player"))
+            velocity = 0;
+    }
+
+
+    public void MoveToTarget()
     {
         // Player의 현재 위치를 받아오는 Object
         target = GameObject.Find("Player").transform;
@@ -65,15 +73,15 @@ public class InEnemyMove : MonoBehaviour
         else
         {
             velocity = 0.0f;
-        }
-
-        // 재귀함수
-        // 행동지표를 바꿀 함수
-        void Think()
-        {
-            nextMove1 = Random.Range(-1, 2);
-            nextMove2 = Random.Range(-1, 2);
-            Invoke("Think", 5);
-        }
+        }   
     }
+    // 재귀함수
+    // 행동지표를 바꿀 함수
+    void Think()
+    {
+        nextMove1 = Random.Range(-1, 2);
+        nextMove2 = Random.Range(-1, 2);
+        Invoke("Think", 5);
+    }
+
 }
