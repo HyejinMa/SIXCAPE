@@ -16,7 +16,7 @@ public class InEnemyMove : MonoBehaviour
     public float velocity;
     public float accelaration;
 
-    public bool CollisionCheck = false; // 충돌을 체크해준다
+   // public bool CollisionCheck = false; // 충돌을 체크해준다
 
     void Awake()
     {
@@ -44,20 +44,20 @@ public class InEnemyMove : MonoBehaviour
         }
     }
     
-
+    /*
     private void OnCollisionStay(Collision collision)
     {
         if (collision.gameObject.tag == "Player")
             CollisionCheck = true;
         else
             CollisionCheck = false;
-    }
+    }*/
     
 
     public void MoveToTarget()
     {
-        if (CollisionCheck == false)
-        {
+        /*if (CollisionCheck == false)
+        {*/
             // Player의 현재 위치를 받아오는 Object
             target = GameObject.Find("Player").transform;
             // Player의 위치와 이 객체의 위치를 빼고 단위 벡터화 한다.
@@ -81,8 +81,8 @@ public class InEnemyMove : MonoBehaviour
             {
                 velocity = 0.0f;
             }
-        }
-        else velocity = 0.0f;
+        
+        
     }
     // 재귀함수
     // 행동지표를 바꿀 함수
